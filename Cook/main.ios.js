@@ -18,13 +18,14 @@ var Icon = require('react-native-vector-icons/Ionicons');
 
 var Search = require('./search.ios.js');
 var Home = require('./home.ios.js');
+var Category = require('./category.ios.js');
 
 var Main  = class JHCook extends Component {
 constructor(props){
       super(props);
       this.state={
         barSelected:[true,false],
-        barTitled:["主页","搜索"],
+        barTitled:["主页","搜索","分类"],
         currentIndex:0,
       }
   }
@@ -54,7 +55,21 @@ constructor(props){
           >
               <Search nav={this.props.navigator}/>   
         </Icon.TabBarItem>
+
+        <Icon.TabBarItem
+           onPress={()=>{
+              this._selected(2);
+            }}
+          title={this.state.barTitled[2]}
+          selected={this.state.barSelected[2]}
+          iconName="ios-search-strong"
+          selectedIconName="ios-search"
+          >
+              <Category nav={this.props.navigator}/>   
+        </Icon.TabBarItem>
+
       </TabBarIOS>
+
     );
   }
   _selected( index){

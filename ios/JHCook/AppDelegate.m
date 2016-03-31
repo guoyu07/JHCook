@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 
 #import "RCTRootView.h"
-
+#define Debug 1
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -21,7 +21,7 @@
   NSFileManager * manger = [NSFileManager defaultManager];
   NSString * jsBundle = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"jsbundle"];
   
-  if (![manger fileExistsAtPath:jsBundle]) {
+  if (Debug || ![manger fileExistsAtPath:jsBundle]) {
     /**
      * Loading JavaScript code - uncomment the one you want.
      *
