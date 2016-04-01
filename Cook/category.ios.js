@@ -18,6 +18,9 @@ import React, {
 //https://github.com/oblador/react-native-vector-icons
 var Icon = require('react-native-vector-icons/Ionicons');
 var CategorySection = require('./category/category_section.ios.js');
+var api = require('./api.js');
+
+var CookList = require('./cook_list/cook_list.ios.js');
 
 var Category  = class JHCook extends Component {
 constructor(props){
@@ -25,25 +28,45 @@ constructor(props){
       this.state={
          nav:this.props.nav,//需要将navigator传递过来
          sections:[],
+         isloading:true,
+         loadingIndicator:"正在加载数据…………",
       }
   }
   componentDidMount() {
-    fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4").
+    fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key="+api.app_key).
       then((response)=> response.json()).
       then((jsonResponse)=>{
         console.info(jsonResponse);
           var code = jsonResponse.resultcode;
           if (code === '200') {
             this._serialSection(jsonResponse.result);
+            this.setState({isloading:false,loadingIndicator:jsonResponse.reason});
+
           }else{
+            this.setState({isloading:true,loadingIndicator:jsonResponse.reason});
             AlertIOS.alert("错误",jsonResponse.reason);
           }
       }).
       done();
   }
 
-  _sectionItemClicked(parentId,id){
-    AlertIOS.alert(""+parentId,""+id);
+  _sectionItemClicked(parentId,id, name){
+    // AlertIOS.alert(""+parentId,""+id);
+
+this.state.nav.push(
+  {title:name,
+  component:CookList,
+  passProps:{nav:this.state.nav,
+    query:"http://apis.juhe.cn/cook/index?cid="+id+"&dtype=&pn=&rn=&format=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"
+    }
+  });
+
+//     fetch("http://apis.juhe.cn/cook/index?cid="+id+"&dtype=&pn=&rn=&format=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4")
+//     .then((response)=>response.json())
+//     .then((jsonResponse)=>{
+// AlertIOS.alert(jsonResponse.reason,jsonResponse.resultcode);
+//     })
+//     .done();
   }
 
   _serialSection(result){
@@ -66,10 +89,18 @@ constructor(props){
       this.setState({sections:tmp});
   }
     render() {
+      if (this.state.isloading) {
+
+        return (
+          <View style={[styles.container,{justifyContent:'center',alignSelf:'center'}]}>
+          <Text>{this.state.loadingIndicator}</Text>
+          </View>
+          );
+      }
     return (
       <View style={styles.container}>
       <Text style={styles.welcome}>Category模版页面</Text>
-      <ScrollView style={{flex:1}}>
+      <ScrollView style={{flex:1,marginTop:20}}>
         {this.state.sections}
       </ScrollView>
       </View>

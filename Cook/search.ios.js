@@ -8,6 +8,7 @@ import React, {
   Component,
   StyleSheet,
   Text,
+  ScrollView,
   ListView,
   TextInput,
   AlertIOS,
@@ -22,6 +23,7 @@ import React, {
 var Icon = require('react-native-vector-icons/Ionicons');
 var RefreshableListView = require('react-native-refreshable-listview')
 var CookDetail = require('./cook_detail.ios.js');
+var CookList = require('./cook_list/cook_list.ios.js');
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) // assumes immutable objects
 
@@ -36,13 +38,29 @@ constructor(props){
       }
   }
     render() {
+      var itemView;
+      if (this.state.searchText === '') {
+        itemView = (<View style={{flex:1,justifyContent:'center'}}><Text style={{alignSelf:'center'}}>没有结果</Text></View>);
+      }else{
+      itemView = ( 
+        <View style={{flex:1}}>
+              <CookList 
+                nav={this.state.nav}
+                query={
+                  "http://apis.juhe.cn/cook/query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}
+              />
+        </View>
+        );
+      }
+
     return (
       <View style={styles.container}>
 
       <TextInput
       onEndEditing={(e)=>{
         console.info(e.nativeEvent.text);
-        this._searchCook(e.nativeEvent.text);
+        this.setState({searchText:e.nativeEvent.text});
+        // this._searchCook(e.nativeEvent.text);
       }}
       returnKeyType={'search'}
       clearTextOnFocus={true}
@@ -51,12 +69,8 @@ constructor(props){
        multiline={false}
        style={{height: 40,marginLeft:10,marginRight:10, borderColor: 'gray', borderWidth: 1}}/>
      
-      <ListView
-      style={{marginTop:10}}
-        renderRow={this._renderRow.bind(this)}
-        dataSource={this.state.dataSource}
-      />
-
+         {itemView}
+     
       </View>
     );
   }
@@ -107,6 +121,8 @@ constructor(props){
     if (menu === '') {
       return;
     }
+    this.setState({searchText:menu});
+return;
     fetch("http://apis.juhe.cn/cook/query.php",{
       method:"POST",
       body:"menu="+menu+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"
@@ -144,6 +160,7 @@ const styles = StyleSheet.create({
     flexDirection:'column',
     backgroundColor:'red',
     marginTop:64,
+    paddingBottom:49,
     justifyContent: 'flex-start',
     backgroundColor: '#F5FCFF',
   },

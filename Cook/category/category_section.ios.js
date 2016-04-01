@@ -37,7 +37,7 @@ constructor(props){
     return (
       <TouchableHighlight key={item.id} 
           onPress={()=>{
-            this.state.callBack&&this.state.callBack(item.parentId,item.id);
+            this.state.callBack&&this.state.callBack(item.parentId,item.id,item.name);
           }
         }>
         <View style={{backgroundColor:'white'}}>
