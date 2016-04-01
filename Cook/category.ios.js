@@ -21,6 +21,7 @@ var CategorySection = require('./category/category_section.ios.js');
 var api = require('./api.js');
 
 var CookList = require('./cook_list/cook_list.ios.js');
+var api = require('./api.js');
 
 var Category  = class JHCook extends Component {
 constructor(props){
@@ -33,7 +34,7 @@ constructor(props){
       }
   }
   componentDidMount() {
-    fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key="+api.app_key).
+    fetch(api.app_url+"category?parentid=&dtype=&key="+api.app_key).
       then((response)=> response.json()).
       then((jsonResponse)=>{
         console.info(jsonResponse);
@@ -57,7 +58,7 @@ this.state.nav.push(
   {title:name,
   component:CookList,
   passProps:{nav:this.state.nav,
-    query:"http://apis.juhe.cn/cook/index?cid="+id+"&dtype=&pn=&rn=&format=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"
+    query:api.app_url+"index?cid="+id+"&dtype=&pn=&rn=&format=&key="+api.app_key
     }
   });
 
@@ -93,7 +94,7 @@ this.state.nav.push(
 
         return (
           <View style={[styles.container,{justifyContent:'center',alignSelf:'center'}]}>
-          <Text>{this.state.loadingIndicator}</Text>
+          <Text style={{alignSelf:'center'}}>{this.state.loadingIndicator}</Text>
           </View>
           );
       }

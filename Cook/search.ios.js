@@ -26,6 +26,7 @@ var CookDetail = require('./cook_detail.ios.js');
 var CookList = require('./cook_list/cook_list.ios.js');
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) // assumes immutable objects
+var api = require('./api.js');
 
 var Search  = class JHCook extends Component {
 constructor(props){
@@ -39,7 +40,7 @@ constructor(props){
   }
     render() {
       var itemView;
-      if (this.state.searchText === '') {
+      if (this.state.searchText === '' || this.state.searchText === '\n') {
         itemView = (<View style={{flex:1,justifyContent:'center'}}><Text style={{alignSelf:'center'}}>没有结果</Text></View>);
       }else{
       itemView = ( 
@@ -47,7 +48,7 @@ constructor(props){
               <CookList 
                 nav={this.state.nav}
                 query={
-                  "http://apis.juhe.cn/cook/query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}
+                  api.app_url+"query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key="+api.app_key}
               />
         </View>
         );
@@ -59,6 +60,7 @@ constructor(props){
       <TextInput
       onEndEditing={(e)=>{
         console.info(e.nativeEvent.text);
+        this.setState({searchText:'\n'});
         this.setState({searchText:e.nativeEvent.text});
         // this._searchCook(e.nativeEvent.text);
       }}

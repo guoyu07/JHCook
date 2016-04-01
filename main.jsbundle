@@ -16940,6 +16940,11 @@ __d('react-native/package.json',function(global, require, module, exports) {  mo
 }
 ;
 });
+__d('JHCook/Cook/api.js',function(global, require, module, exports) {  exports.app_key="5c546c2e3aa79cc635a5d8ba0e0bcca4";
+var app_host="http://apis.juhe.cn";
+var jhcook="/cook";
+exports.app_url=app_host+jhcook;
+});
 __d('react-native/Libraries/CustomComponents/NavigationExperimental/back_chevron.png',function(global, require, module, exports) {  module.exports = require("AssetRegistry").registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/mave/JHCook/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental","httpServerLocation":"/assets/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental","width":26,"height":42,"scales":[1],"files":["/Users/mave/JHCook/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental/back_chevron.png"],"hash":"ff62a71400a6f2c153edd030a2479ca7","name":"back_chevron","type":"png"});
 });
 __d('react-native-refreshable-listview/lib/createElementFrom.js',function(global, require, module, exports) {  var React=require('react-native/Libraries/react-native/react-native.js');var 
@@ -66834,7 +66839,7 @@ item,index){var _this2=this;
 return (
 _reactNative2.default.createElement(_reactNative.TouchableHighlight,{key:item.id,
 onPress:function(){
-_this2.state.callBack&&_this2.state.callBack(item.parentId,item.id);}},
+_this2.state.callBack&&_this2.state.callBack(item.parentId,item.id,item.name);}},
 
 
 _reactNative2.default.createElement(_reactNative.View,{style:{backgroundColor:'white'}},
@@ -70110,7 +70115,140 @@ return isNative(value)?value:undefined;}
 
 module.exports=getNative;
 });
+__d('JHCook/Cook/cook_list/cook_list.ios.js',function(global, require, module, exports) {  var _reactNative=require('react-native/Libraries/react-native/react-native.js');var _reactNative2=babelHelpers.interopRequireDefault(_reactNative);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var Icon=require('react-native-vector-icons/Ionicons.js');
+var CookDetail=require('JHCook/Cook/cook_detail.ios.js');
+
+var CookList=function(_Component){babelHelpers.inherits(JHCook,_Component);
+function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
+props));
+_this.state={
+dataSource:new _reactNative.ListView.DataSource({rowHasChanged:function(r1,r2){return r1!==r2;}}),
+query:_this.props.query,
+nav:_this.props.nav};return _this;}babelHelpers.createClass(JHCook,[{key:'componentDidMount',value:function componentDidMount()
+
+
+{var _this2=this;
+fetch(this.state.query).
+then(function(response){return (
+response.json());}).
+
+then(function(resJson){
+console.info(resJson);
+_this2.setState({isLoading:false});
+if(resJson.resultcode!='200'){
+_reactNative.AlertIOS.alert("错误",resJson.reason);
+return;}
+
+
+var data=[];
+
+
+
+
+var result=resJson.result;
+for(var index=0;index<result.data.length;index++){
+data.push(result.data[index]);}
+
+console.info("获取的数据"+data[data.length/2]);
+_this2.setState({dataSource:_this2.state.dataSource.cloneWithRows(data)});}).
+
+done();}},{key:'render',value:function render()
+
+
+
+{
+return (
+_reactNative2.default.createElement(_reactNative.View,{style:styles.container},
+_reactNative2.default.createElement(_reactNative.ListView,{
+style:{marginTop:0},
+renderRow:this._renderRow.bind(this),
+dataSource:this.state.dataSource})));}},{key:'_renderRow',value:function _renderRow(
+
+
+
+
+rowData,rowIndex){var _this3=this;
+console.info(rowData);
+var bgColor='#eeddcc';
+var picURI=rowData.albums[0];
+if(picURI===''){
+picURI='http://facebook.github.io/react-native/img/header_logo.png';}
+
+if(rowIndex%2===0){
+bgColor='white';}
+
+return (
+_reactNative2.default.createElement(_reactNative.TouchableHighlight,{
+onPress:function(){
+
+_this3.state.nav.push({
+title:rowData.title,
+component:CookDetail,
+passProps:{cookData:rowData}});},
+
+
+
+underlayColor:'#aabbbc'},
+
+_reactNative2.default.createElement(_reactNative.View,{style:{backgroundColor:bgColor,justifyContent:'flex-start',padding:5,flexDirection:'row'},key:rowData.id+""+rowData.title},
+_reactNative2.default.createElement(_reactNative.View,{style:{flex:1,flexDirection:'column'}},
+_reactNative2.default.createElement(_reactNative.Image,{style:{width:160,height:90},
+source:{uri:picURI}}),
+
+_reactNative2.default.createElement(_reactNative.Text,{style:{flex:1,fontSize:20}},'食物：',rowData.ingredients)),
+
+_reactNative2.default.createElement(_reactNative.View,{style:{flex:1}},
+
+_reactNative2.default.createElement(_reactNative.Text,null,rowData.title),
+_reactNative2.default.createElement(_reactNative.Text,{style:{flex:1,fontSize:20}},'辅料：',rowData.burden)))));}}]);return JHCook;}(_reactNative.Component);
+
+
+
+
+
+
+
+
+var styles=_reactNative.StyleSheet.create({
+container:{
+flex:1,
+backgroundColor:'#F5FCFF'},
+
+welcome:{
+fontSize:20,
+textAlign:'center',
+margin:10},
+
+instructions:{
+textAlign:'center',
+color:'#333333',
+marginBottom:5}});
+
+
+module.exports=CookList;
+});
 __d('JHCook/Cook/search.ios.js',function(global, require, module, exports) {  var _reactNative=require('react-native/Libraries/react-native/react-native.js');var _reactNative2=babelHelpers.interopRequireDefault(_reactNative);
+
 
 
 
@@ -70134,6 +70272,7 @@ __d('JHCook/Cook/search.ios.js',function(global, require, module, exports) {  va
 var Icon=require('react-native-vector-icons/Ionicons.js');
 var RefreshableListView=require('react-native-refreshable-listview/index.js');
 var CookDetail=require('JHCook/Cook/cook_detail.ios.js');
+var CookList=require('JHCook/Cook/cook_list/cook_list.ios.js');
 
 var ds=new _reactNative.ListView.DataSource({rowHasChanged:function(r1,r2){return r1!==r2;}});
 
@@ -70148,13 +70287,29 @@ dataSource:new _reactNative.ListView.DataSource({rowHasChanged:function(r1,r2){r
 
 
 {var _this2=this;
+var itemView;
+if(this.state.searchText===''){
+itemView=_reactNative2.default.createElement(_reactNative.View,{style:{flex:1,justifyContent:'center'}},_reactNative2.default.createElement(_reactNative.Text,{style:{alignSelf:'center'}},'没有结果'));}else 
+{
+itemView=
+_reactNative2.default.createElement(_reactNative.View,{style:{flex:1}},
+_reactNative2.default.createElement(CookList,{
+nav:this.state.nav,
+query:
+"http://apis.juhe.cn/cook/query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}));}
+
+
+
+
+
 return (
 _reactNative2.default.createElement(_reactNative.View,{style:styles.container},
 
 _reactNative2.default.createElement(_reactNative.TextInput,{
 onEndEditing:function(e){
 console.info(e.nativeEvent.text);
-_this2._searchCook(e.nativeEvent.text);},
+_this2.setState({searchText:e.nativeEvent.text});},
+
 
 returnKeyType:'search',
 clearTextOnFocus:true,
@@ -70163,11 +70318,7 @@ placeholder:"输入菜系或者菜品",
 multiline:false,
 style:{height:40,marginLeft:10,marginRight:10,borderColor:'gray',borderWidth:1}}),
 
-_reactNative2.default.createElement(_reactNative.ListView,{
-style:{marginTop:10},
-renderRow:this._renderRow.bind(this),
-dataSource:this.state.dataSource})));}},{key:'_renderRow',value:function _renderRow(
-
+itemView));}},{key:'_renderRow',value:function _renderRow(
 
 
 
@@ -70219,6 +70370,8 @@ menu){var _this4=this;
 if(menu===''){
 return;}
 
+this.setState({searchText:menu});
+return;
 fetch("http://apis.juhe.cn/cook/query.php",{
 method:"POST",
 body:"menu="+menu+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}).
@@ -70256,6 +70409,7 @@ flex:1,
 flexDirection:'column',
 backgroundColor:'red',
 marginTop:64,
+paddingBottom:49,
 justifyContent:'flex-start',
 backgroundColor:'#F5FCFF'},
 
@@ -70699,32 +70853,55 @@ __d('JHCook/Cook/category.ios.js',function(global, require, module, exports) {  
 
 var Icon=require('react-native-vector-icons/Ionicons.js');
 var CategorySection=require('JHCook/Cook/category/category_section.ios.js');
+var api=require('JHCook/Cook/api.js');
+
+var CookList=require('JHCook/Cook/cook_list/cook_list.ios.js');
 
 var Category=function(_Component){babelHelpers.inherits(JHCook,_Component);
 function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
 props));
 _this.state={
 nav:_this.props.nav,
-sections:[]};return _this;}babelHelpers.createClass(JHCook,[{key:'componentDidMount',value:function componentDidMount()
+sections:[],
+isloading:true,
+loadingIndicator:"正在加载数据…………"};return _this;}babelHelpers.createClass(JHCook,[{key:'componentDidMount',value:function componentDidMount()
 
 
 {var _this2=this;
-fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4").
+fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key="+api.app_key).
 then(function(response){return response.json();}).
 then(function(jsonResponse){
 console.info(jsonResponse);
 var code=jsonResponse.resultcode;
 if(code==='200'){
-_this2._serialSection(jsonResponse.result);}else 
+_this2._serialSection(jsonResponse.result);
+_this2.setState({isloading:false,loadingIndicator:jsonResponse.reason});}else 
+
 {
+_this2.setState({isloading:true,loadingIndicator:jsonResponse.reason});
 _reactNative.AlertIOS.alert("错误",jsonResponse.reason);}}).
 
 
 done();}},{key:'_sectionItemClicked',value:function _sectionItemClicked(
 
 
-parentId,id){
-_reactNative.AlertIOS.alert(""+parentId,""+id);}},{key:'_serialSection',value:function _serialSection(
+parentId,id,name){
+
+
+this.state.nav.push(
+{title:name,
+component:CookList,
+passProps:{nav:this.state.nav,
+query:"http://apis.juhe.cn/cook/index?cid="+id+"&dtype=&pn=&rn=&format=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}});}},{key:'_serialSection',value:function _serialSection(
+
+
+
+
+
+
+
+
+
 
 
 result){
@@ -70747,10 +70924,18 @@ callBack:this._sectionItemClicked.bind(this)}));}
 this.setState({sections:tmp});}},{key:'render',value:function render()
 
 {
+if(this.state.isloading){
+
+return (
+_reactNative2.default.createElement(_reactNative.View,{style:[styles.container,{justifyContent:'center',alignSelf:'center'}]},
+_reactNative2.default.createElement(_reactNative.Text,null,this.state.loadingIndicator)));}
+
+
+
 return (
 _reactNative2.default.createElement(_reactNative.View,{style:styles.container},
 _reactNative2.default.createElement(_reactNative.Text,{style:styles.welcome},'Category模版页面'),
-_reactNative2.default.createElement(_reactNative.ScrollView,{style:{flex:1}},
+_reactNative2.default.createElement(_reactNative.ScrollView,{style:{flex:1,marginTop:20}},
 this.state.sections)));}}]);return JHCook;}(_reactNative.Component);
 
 
