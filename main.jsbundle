@@ -16642,6 +16642,9 @@ return nativeKeys(Object(object));}
 
 module.exports=baseKeys;
 });
+__d('JHCook/Cook/api.js',function(global, require, module, exports) {  exports.app_key="5c546c2e3aa79cc635a5d8ba0e0bcca4";
+exports.app_url='http://apis.juhe.cn/cook/';
+});
 __d('is-promise/index.js',function(global, require, module, exports) {  module.exports=isPromise;
 
 function isPromise(obj){
@@ -16939,11 +16942,6 @@ __d('react-native/package.json',function(global, require, module, exports) {  mo
   "version": "0.22.2"
 }
 ;
-});
-__d('JHCook/Cook/api.js',function(global, require, module, exports) {  exports.app_key="5c546c2e3aa79cc635a5d8ba0e0bcca4";
-var app_host="http://apis.juhe.cn";
-var jhcook="/cook";
-exports.app_url=app_host+jhcook;
 });
 __d('react-native/Libraries/CustomComponents/NavigationExperimental/back_chevron.png',function(global, require, module, exports) {  module.exports = require("AssetRegistry").registerAsset({"__packager_asset":true,"fileSystemLocation":"/Users/mave/JHCook/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental","httpServerLocation":"/assets/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental","width":26,"height":42,"scales":[1],"files":["/Users/mave/JHCook/node_modules/react-native/Libraries/CustomComponents/NavigationExperimental/back_chevron.png"],"hash":"ff62a71400a6f2c153edd030a2479ca7","name":"back_chevron","type":"png"});
 });
@@ -66680,13 +66678,14 @@ __d('JHCook/Cook/cook_detail.ios.js',function(global, require, module, exports) 
 
 
 
+
 var Icon=require('react-native-vector-icons/Ionicons.js');
 
 var CookDetail=function(_Component){babelHelpers.inherits(JHCook,_Component);
 function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
 props));
-_this.state={};return _this;}babelHelpers.createClass(JHCook,[{key:'_renderPicItem',value:function _renderPicItem(
-
+_this.state={
+window:_reactNative.Dimensions.get('window')};return _this;}babelHelpers.createClass(JHCook,[{key:'_renderPicItem',value:function _renderPicItem(
 
 
 index,data){
@@ -66695,11 +66694,12 @@ if(index%2===1){
 bgColor='gray';}
 
 
+
 return (
 _reactNative2.default.createElement(_reactNative.View,{key:data.img,
-style:{flex:1,padding:5,backgroundColor:bgColor}},
+style:{flex:1,padding:5,backgroundColor:bgColor,padding:10}},
 _reactNative2.default.createElement(_reactNative.Text,{style:{flex:1,alignSelf:'center',fontSize:25}},data.step),
-_reactNative2.default.createElement(_reactNative.Image,{style:{alignSelf:'center',width:160,height:90},
+_reactNative2.default.createElement(_reactNative.Image,{style:{alignSelf:'center',width:this.state.window.width,height:this.state.window.width/16*9},
 source:{uri:data.img}})));}},{key:'render',value:function render()
 
 
@@ -66717,7 +66717,8 @@ return (
 _reactNative2.default.createElement(_reactNative.ScrollView,{style:styles.container},
 _reactNative2.default.createElement(_reactNative.View,null,
 _reactNative2.default.createElement(_reactNative.Text,null,'  ',itemData.imtro),
-_reactNative2.default.createElement(_reactNative.Image,{style:{alignSelf:'center',width:160,height:90},source:{uri:itemData.albums[0]}}),
+_reactNative2.default.createElement(_reactNative.Image,{style:{alignSelf:'center',width:this.state.window.width,height:this.state.window.width/16*9},
+source:{uri:itemData.albums[0]}}),
 _reactNative2.default.createElement(_reactNative.Text,null,'主料：',itemData.ingredients),
 _reactNative2.default.createElement(_reactNative.Text,null,'辅料：',itemData.burden)),
 
@@ -66761,19 +66762,20 @@ __d('JHCook/Cook/home.ios.js',function(global, require, module, exports) {  var 
 
 
 
+
 var Icon=require('react-native-vector-icons/Ionicons.js');
 
 var Home=function(_Component){babelHelpers.inherits(JHCook,_Component);
 function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
 props));
-_this.state={};return _this;}babelHelpers.createClass(JHCook,[{key:'render',value:function render()
-
+_this.state={
+url:'http://blog.sina.com.cn/u/3962633044'};return _this;}babelHelpers.createClass(JHCook,[{key:'render',value:function render()
 
 
 {
 return (
-_reactNative2.default.createElement(_reactNative.View,{style:styles.container},
-_reactNative2.default.createElement(_reactNative.Text,{style:styles.welcome},'Home模版页面')));}}]);return JHCook;}(_reactNative.Component);
+_reactNative2.default.createElement(_reactNative.View,{style:styles.container}));}}]);return JHCook;}(_reactNative.Component);
+
 
 
 
@@ -70275,6 +70277,7 @@ var CookDetail=require('JHCook/Cook/cook_detail.ios.js');
 var CookList=require('JHCook/Cook/cook_list/cook_list.ios.js');
 
 var ds=new _reactNative.ListView.DataSource({rowHasChanged:function(r1,r2){return r1!==r2;}});
+var api=require('JHCook/Cook/api.js');
 
 var Search=function(_Component){babelHelpers.inherits(JHCook,_Component);
 function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
@@ -70288,7 +70291,7 @@ dataSource:new _reactNative.ListView.DataSource({rowHasChanged:function(r1,r2){r
 
 {var _this2=this;
 var itemView;
-if(this.state.searchText===''){
+if(this.state.searchText===''||this.state.searchText==='\n'){
 itemView=_reactNative2.default.createElement(_reactNative.View,{style:{flex:1,justifyContent:'center'}},_reactNative2.default.createElement(_reactNative.Text,{style:{alignSelf:'center'}},'没有结果'));}else 
 {
 itemView=
@@ -70296,7 +70299,7 @@ _reactNative2.default.createElement(_reactNative.View,{style:{flex:1}},
 _reactNative2.default.createElement(CookList,{
 nav:this.state.nav,
 query:
-"http://apis.juhe.cn/cook/query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}));}
+api.app_url+"query.php?"+"menu="+this.state.searchText+"&dtype=&pn=&rn=&albums=&key="+api.app_key}));}
 
 
 
@@ -70308,6 +70311,7 @@ _reactNative2.default.createElement(_reactNative.View,{style:styles.container},
 _reactNative2.default.createElement(_reactNative.TextInput,{
 onEndEditing:function(e){
 console.info(e.nativeEvent.text);
+_this2.setState({searchText:'\n'});
 _this2.setState({searchText:e.nativeEvent.text});},
 
 
@@ -70856,6 +70860,7 @@ var CategorySection=require('JHCook/Cook/category/category_section.ios.js');
 var api=require('JHCook/Cook/api.js');
 
 var CookList=require('JHCook/Cook/cook_list/cook_list.ios.js');
+var api=require('JHCook/Cook/api.js');
 
 var Category=function(_Component){babelHelpers.inherits(JHCook,_Component);
 function JHCook(props){babelHelpers.classCallCheck(this,JHCook);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(JHCook).call(this,
@@ -70868,7 +70873,7 @@ loadingIndicator:"正在加载数据…………"};return _this;}babelHelpers.cr
 
 
 {var _this2=this;
-fetch("http://apis.juhe.cn/cook/category?parentid=&dtype=&key="+api.app_key).
+fetch(api.app_url+"category?parentid=&dtype=&key="+api.app_key).
 then(function(response){return response.json();}).
 then(function(jsonResponse){
 console.info(jsonResponse);
@@ -70892,7 +70897,7 @@ this.state.nav.push(
 {title:name,
 component:CookList,
 passProps:{nav:this.state.nav,
-query:"http://apis.juhe.cn/cook/index?cid="+id+"&dtype=&pn=&rn=&format=&key=5c546c2e3aa79cc635a5d8ba0e0bcca4"}});}},{key:'_serialSection',value:function _serialSection(
+query:api.app_url+"index?cid="+id+"&dtype=&pn=&rn=&format=&key="+api.app_key}});}},{key:'_serialSection',value:function _serialSection(
 
 
 
@@ -70927,8 +70932,8 @@ this.setState({sections:tmp});}},{key:'render',value:function render()
 if(this.state.isloading){
 
 return (
-_reactNative2.default.createElement(_reactNative.View,{style:[styles.container,{justifyContent:'center',alignSelf:'center'}]},
-_reactNative2.default.createElement(_reactNative.Text,null,this.state.loadingIndicator)));}
+_reactNative2.default.createElement(_reactNative.View,{style:[styles.container,{flex:1,justifyContent:'center',alignSelf:'center'}]},
+_reactNative2.default.createElement(_reactNative.Text,{style:{alignSelf:'center'}},this.state.loadingIndicator)));}
 
 
 

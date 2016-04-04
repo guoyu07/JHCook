@@ -93,7 +93,7 @@ this.state.nav.push(
       if (this.state.isloading) {
 
         return (
-          <View style={[styles.container,{justifyContent:'center',alignSelf:'center'}]}>
+          <View style={[styles.container,{flex:1,justifyContent:'center',alignSelf:'center'}]}>
           <Text style={{alignSelf:'center'}}>{this.state.loadingIndicator}</Text>
           </View>
           );

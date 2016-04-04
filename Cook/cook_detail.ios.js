@@ -8,6 +8,7 @@ import React, {
   Component,
   StyleSheet,
   Text,
+  Dimensions,
   Image,
   TabBarIOS,
   ScrollView,
@@ -22,7 +23,7 @@ var CookDetail  = class JHCook extends Component {
 constructor(props){
       super(props);
       this.state={
-       
+       window:Dimensions.get('window'),
       }
   }
   _renderPicItem(index,data){
@@ -31,11 +32,12 @@ constructor(props){
         bgColor = 'gray';
       }
 
+
     return (
       <View key={data.img}
-       style={{flex:1,padding:5,backgroundColor:bgColor}}>
+       style={{flex:1,padding:5,backgroundColor:bgColor,padding:10}}>
         <Text style={{flex:1,alignSelf:'center',fontSize:25}}>{data.step}</Text>
-         <Image  style={{alignSelf:'center',width:160,height:90}}
+         <Image  style={{alignSelf:'center',width:this.state.window.width,height:this.state.window.width/16*9}}
           source={{uri:data.img}}/>
       </View>);
   }
@@ -53,7 +55,8 @@ constructor(props){
       <ScrollView style={styles.container}>
           <View>
           <Text>  {itemData.imtro }</Text>
-             <Image  style={{alignSelf:'center',width:160,height:90}} source={{uri:itemData.albums[0]}}/>
+             <Image  style={{alignSelf:'center',width:this.state.window.width,height:this.state.window.width/16*9}}
+              source={{uri:itemData.albums[0]}}/>
           <Text>主料：{itemData.ingredients }</Text>
                 <Text>辅料：{itemData.burden}</Text>
           </View>

@@ -9,6 +9,7 @@ import React, {
   StyleSheet,
   Text,
   TabBarIOS,
+  WebView,
   View
 } from 'react-native';
 
@@ -20,13 +21,13 @@ var Home  = class JHCook extends Component {
 constructor(props){
       super(props);
       this.state={
-       
+       url:'http://blog.sina.com.cn/u/3962633044',
       }
   }
     render() {
     return (
       <View style={styles.container}>
-      <Text style={styles.welcome}>Home模版页面</Text>
+      
       </View>
     );
   }

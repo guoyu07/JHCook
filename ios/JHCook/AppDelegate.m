@@ -10,7 +10,7 @@
 #import "AppDelegate.h"
 
 #import "RCTRootView.h"
-#define Debug 1
+#define Debug 0
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
