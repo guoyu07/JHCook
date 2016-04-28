@@ -7,6 +7,7 @@ import React, {
   AppRegistry,
   Component,
   StyleSheet,
+  Modal,
   Text,
   Dimensions,
   Image,
@@ -34,12 +35,17 @@ constructor(props){
 
 
     return (
+       <TouchableHighlight >
       <View key={data.img}
        style={{flex:1,padding:5,backgroundColor:bgColor,padding:10}}>
+        underlayColor='#12345d'>
+        
         <Text style={{flex:1,alignSelf:'center',fontSize:25}}>{data.step}</Text>
          <Image  style={{alignSelf:'center',width:this.state.window.width,height:this.state.window.width/16*9}}
           source={{uri:data.img}}/>
-      </View>);
+      </View>
+      </TouchableHighlight>
+      );
   }
     render() {
       var itemData = this.props.cookData;

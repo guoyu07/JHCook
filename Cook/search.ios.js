@@ -7,6 +7,7 @@ import React, {
   AppRegistry,
   Component,
   StyleSheet,
+  AsyncStorage,
   Text,
   ScrollView,
   ListView,
@@ -28,6 +29,8 @@ var CookList = require('./cook_list/cook_list.ios.js');
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) // assumes immutable objects
 var api = require('./api.js');
 
+var HISTORY_KEY = "HISTORY_KEY";
+
 var Search  = class JHCook extends Component {
 constructor(props){
       super(props);
@@ -35,10 +38,25 @@ constructor(props){
        searchText:'',
        nav:this.props.nav,//需要将navigator传递过来
        isLoading:false,
+       history:'',
        dataSource:new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}) ,
       }
   }
+  componentDidMount() {
+    this._renderHistory();
+  }
+  _renderHistory(){
+      AsyncStorage.getItem(HISTORY_KEY,(error,value)=>{
+        if (!error) {
+
+        } else{
+          this.setState({searchText:value});
+              AlertIOS.alert("提示","内部错错"+value);
+        }
+      });
+  }
     render() {
+
       var itemView;
       if (this.state.searchText === '' || this.state.searchText === '\n') {
         itemView = (<View style={{flex:1,justifyContent:'center'}}><Text style={{alignSelf:'center'}}>没有结果</Text></View>);
@@ -62,6 +80,14 @@ constructor(props){
         console.info(e.nativeEvent.text);
         this.setState({searchText:'\n'});
         this.setState({searchText:e.nativeEvent.text});
+        AsyncStorage.setItem(HISTORY_KEY,this.state.searchText,
+          (error)=>{
+            if (!error) {
+
+            } else{
+              AlertIOS.alert("提示","内部错错"+error);
+            }
+        });
         // this._searchCook(e.nativeEvent.text);
       }}
       returnKeyType={'search'}

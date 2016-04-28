@@ -8,16 +8,21 @@
  */
 
 #import "AppDelegate.h"
-
+#import "TimeOutManager.h"
 #import "RCTRootView.h"
-#define Debug 0
+#define Debug 1
 @implementation AppDelegate
-
+- (void)out{
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  NSURL *jsCodeLocation;
-
+//  
+//  [TimeOutManager startWithTimeOut:10 finally:^(id response) {
+//    
+//  }];
+//  [TimeOutManager canceTimer];
   
+  NSURL *jsCodeLocation;
   NSFileManager * manger = [NSFileManager defaultManager];
   NSString * jsBundle = [[NSBundle mainBundle] pathForResource:@"main" ofType:@"jsbundle"];
   

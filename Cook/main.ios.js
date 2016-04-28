@@ -19,7 +19,7 @@ var Icon = require('react-native-vector-icons/Ionicons');
 var Search = require('./search.ios.js');
 var Home = require('./home.ios.js');
 var Category = require('./category.ios.js');
-
+// var OSC = require('./osc/index.ios.js');
 var Main  = class JHCook extends Component {
 constructor(props){
       super(props);

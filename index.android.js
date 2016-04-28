@@ -7,12 +7,15 @@ import React, {
   AppRegistry,
   Component,
   StyleSheet,
+  Navigator,
   Text,
+  Alert,
   View
 } from 'react-native';
 
 class JHCook extends Component {
   render() {
+Alert.alert("Title","Message");
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -24,6 +27,7 @@ class JHCook extends Component {
         <Text style={styles.instructions}>
           Shake or press menu button for dev menu
         </Text>
+
       </View>
     );
   }
@@ -32,6 +36,7 @@ class JHCook extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:'column',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
